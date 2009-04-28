@@ -1,0 +1,5 @@
+build/*
+videoextrator features.txt
+.DS_Store
+Video Extractor.xcodeproj/patrick.pbxuser
+Video Extractor.xcodeproj/patrick.perspectivev3
