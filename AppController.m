@@ -10,5 +10,18 @@
 
 
 @implementation AppController
+-(IBAction)startCancelTranscode:(id)sender
+{
 
+}
+
+-(IBAction)showInputChooserPanel:(id)sender
+{
+
+}
+
+-(IBAction)showOutputChooserPanel:(id)sender
+{
+
+}
 @end
