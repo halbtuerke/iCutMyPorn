@@ -8,8 +8,8 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="57"/>
 			<integer value="372"/>
+			<integer value="57"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1302,9 +1302,9 @@
 								<string key="NSContents">Choose</string>
 								<reference key="NSSupport" ref="388471507"/>
 								<reference key="NSControlView" ref="718004633"/>
-								<int key="NSButtonFlags">-2038284033</int>
+								<int key="NSButtonFlags">-930987777</int>
 								<int key="NSButtonFlags2">129</int>
-								<string key="NSAlternateContents"/>
+								<string key="NSAlternateContents">Clear</string>
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">200</int>
 								<int key="NSPeriodicInterval">25</int>
@@ -1322,9 +1322,9 @@
 								<string key="NSContents">Choose</string>
 								<reference key="NSSupport" ref="388471507"/>
 								<reference key="NSControlView" ref="247587086"/>
-								<int key="NSButtonFlags">-2038284033</int>
+								<int key="NSButtonFlags">-930987777</int>
 								<int key="NSButtonFlags2">129</int>
-								<string key="NSAlternateContents"/>
+								<string key="NSAlternateContents">Clear</string>
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">200</int>
 								<int key="NSPeriodicInterval">25</int>
@@ -1342,9 +1342,9 @@
 								<string key="NSContents">Start</string>
 								<reference key="NSSupport" ref="388471507"/>
 								<reference key="NSControlView" ref="782507865"/>
-								<int key="NSButtonFlags">-2038284033</int>
+								<int key="NSButtonFlags">-930987777</int>
 								<int key="NSButtonFlags2">129</int>
-								<string key="NSAlternateContents"/>
+								<string key="NSAlternateContents">Cancel</string>
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">200</int>
 								<int key="NSPeriodicInterval">25</int>
