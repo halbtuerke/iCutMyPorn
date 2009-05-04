@@ -1265,7 +1265,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="380659323">
 								<int key="NSCellFlags">-1804468671</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">HH:MM:SS</string>
+								<string key="NSContents">00:00:00</string>
 								<reference key="NSSupport" ref="388471507"/>
 								<reference key="NSControlView" ref="355679986"/>
 								<bool key="NSDrawsBackground">YES</bool>
@@ -1282,7 +1282,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="990920205">
 								<int key="NSCellFlags">-1804468671</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">HH:MM:SS</string>
+								<string key="NSContents">00:00:00</string>
 								<reference key="NSSupport" ref="388471507"/>
 								<reference key="NSControlView" ref="666512718"/>
 								<bool key="NSDrawsBackground">YES</bool>
@@ -3549,7 +3549,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{207, 285}, {478, 20}}</string>
+					<string>{{171, 285}, {478, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{74, 862}</string>
@@ -3688,7 +3688,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>{{219, 102}, {245, 183}}</string>
+					<string>{{183, 102}, {245, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{23, 794}, {245, 183}}</string>
