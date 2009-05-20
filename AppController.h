@@ -14,23 +14,23 @@
     IBOutlet NSTextField    *outputFileField;
     IBOutlet NSTextField    *startTimeCodeField;
     IBOutlet NSTextField    *durationTimeCodeField;
-    
+
     IBOutlet NSButton       *inputChooseButton;
     IBOutlet NSButton       *outputChooseButton;
     IBOutlet NSButton       *startTranscodeButton;
-    
+
     IBOutlet NSMatrix       *qualityRadioGroup;
-    
+
     IBOutlet NSPanel        *progressSheet;
     IBOutlet NSWindow       *mainWindow;
     IBOutlet NSWindow       *logWindow;
     IBOutlet NSProgressIndicator *progressIndicator;
-    
+
     IBOutlet NSTextView     *logView;
-    
+
     NSTask                  *task;
     NSPipe                  *pipe;
-    
+
     NSString                *qualitySettings;
     int                     startButtonEnabled;
 }
