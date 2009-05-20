@@ -216,6 +216,27 @@
     }
 }
 
+-(IBAction)cancelTranscode:(id)sender
+{
+    // Is the task running?
+    if (task) {
+        // Close progress sheet
+        [progressSheet orderOut:nil];
+        [NSApp endSheet:progressSheet];
+
+        // Ask the user if he's sure
+        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+
+        [alert addButtonWithTitle:@"Yes"];
+        [alert addButtonWithTitle:@"No"];
+        [alert setMessageText:@"Are you sure?"];
+        [alert setInformativeText:@"Temporary movie file will be deleted."];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
+    }
+
+    // NSLog(@"Something went wrong…");
+}
 
 }
 @end
