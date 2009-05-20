@@ -185,6 +185,37 @@
 
 -(IBAction)showOutputChooserPanel:(id)sender
 {
+    if ([outputChooseButton title] == @"Clear") {
+        [outputFileField setStringValue:@""];
+        [outputChooseButton setTitle:@"Choose"];
+        startButtonEnabled = startButtonEnabled - 2;
+        [self enableStartButton];
+    } else {
+        NSString *moviesDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Movies"];
+        NSSavePanel *panel = [NSSavePanel savePanel];
+
+        [panel beginSheetForDirectory:moviesDirectory
+                                 file:@"Extracted Video.mp4"
+                       modalForWindow:mainWindow
+                        modalDelegate:self
+                       didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:)
+                          contextInfo:NULL];
+    }
+}
+
+- (void)savePanelDidEnd:(NSSavePanel *)savePanel
+            returnCode:(int)returnCode
+            contextInfo:(void *)x
+{
+    if (returnCode == NSOKButton) {
+        NSString *path = [savePanel filename];
+        [outputFileField setStringValue:path];
+        [outputChooseButton setTitle:@"Clear"];
+        [self enableStartButton];
+        // NSLog(@"outputFile: %@", path);
+    }
+}
+
 
 }
 @end
