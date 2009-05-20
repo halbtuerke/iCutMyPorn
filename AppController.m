@@ -119,6 +119,30 @@
 }
 
 
+-(void)appendData:(NSData *)d
+{
+    // NSLog(@"Trying to append");
+    NSString *s = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
+    NSTextStorage *ts = [logView textStorage];
+    [ts replaceCharactersInRange:NSMakeRange([ts length], 0) withString:s];
+    [s release];
+}
+
+
+-(void)dataReady:(NSNotification *)n
+{
+    NSData *d;
+    d = [[n userInfo] valueForKey:NSFileHandleNotificationDataItem];
+    // NSLog(@"The notification is: %@", n);
+    // NSLog(@"The data is: %@", d);
+
+    [self appendData:d];
+
+    // If the task is running start reading again
+    if ([task isRunning]) {
+        // NSLog(@"Reading again");
+        [[pipe fileHandleForReading] readInBackgroundAndNotify];
+    }
 }
 
 -(IBAction)showInputChooserPanel:(id)sender
