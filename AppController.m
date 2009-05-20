@@ -238,5 +238,27 @@
     // NSLog(@"Something went wrong…");
 }
 
+- (void)alertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+    // NSLog(@"alertDidEnd called");
+    if (returnCode == NSAlertFirstButtonReturn) {
+        // Kill ffmpeg
+        [task terminate];
+
+        // Delete the temporary outputfile
+        NSFileManager *fm = [[NSFileManager alloc] init];
+        [fm removeFileAtPath:[outputFileField stringValue] handler:nil];
+
+        [progressIndicator stopAnimation:self];
+        // [startTranscodeButton setNextState];
+    } else {
+        // Close the confirmation alert sheet
+        [[alert window] orderOut:self];
+
+        // Reopen the progress sheet
+        [NSApp beginSheet:progressSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
+    }
+
+}
+
 }
 @end
