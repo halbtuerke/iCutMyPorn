@@ -17,6 +17,108 @@
     // NSLog(@"startButtonEnabeld: %d", startButtonEnabled);
 }
 
+-(IBAction)startTranscode:(id)sender
+{
+    // Validate all user inputs
+
+    // Show progress sheet and start the progress indicator
+    [NSApp beginSheet:progressSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
+    [progressIndicator startAnimation:self];
+
+    // NSLog(@"startTimeCode: %@", [startTimeCodeField stringValue]);
+    // NSLog(@"durationTimeCode: %@", [durationTimeCodeField stringValue]);
+    // NSLog(@"quality: %@", [[qualityRadioGroup selectedCell] title]);
+
+    NSString *startTimeCode = [startTimeCodeField stringValue];
+    NSString *durationTimeCode = [durationTimeCodeField stringValue];
+
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *ffmpegPath = [bundle pathForAuxiliaryExecutable:@"ffmpeg"];
+
+    // NSLog(@"ffmpegPath: %@", ffmpegPath);
+
+    // Start ffmpeg
+    task = [[NSTask alloc] init];
+    [task setLaunchPath:ffmpegPath];
+
+    NSMutableArray *tempArgs = [NSMutableArray arrayWithObjects: @"-i",
+                     [inputFileField stringValue],
+                     @"-acodec",
+                     @"libfaac",
+                     @"-ab",
+                     @"128k",
+                     @"-vcodec",
+                     @"libx264",
+                     @"-threads",
+                     @"2",
+                     @"-y",
+                     [outputFileField stringValue], nil];
+
+    NSArray *qualityArray;
+
+    // NSLog(@"qualityRadioGroup: %@", [[qualityRadioGroup selectedCell] title]);
+
+    // NSLog(@"TEMPARGS %@", tempArgs);
+
+    if ([[[qualityRadioGroup selectedCell] title] isEqualToString:@"Lossless"]) {
+        qualityArray = [NSArray arrayWithObjects:@"-crf", @"18", @"-me_method", @"umh", @"-subq", @"6", nil];
+        [tempArgs addObjectsFromArray:qualityArray];
+        // NSLog(@"tempargs: %@", tempArgs);
+    } else if ([[[qualityRadioGroup selectedCell] title] isEqualToString:@"Recompress"]) {
+        qualityArray = [NSArray arrayWithObjects:@"-b", @"1000k", @"-subq", @"4", nil];
+        [tempArgs addObjectsFromArray:qualityArray];
+        // NSLog(@"tempargs: %@", tempArgs);
+    }
+
+    NSArray *timecodeArray;
+
+    // -- convert from startTimeCode to end of file
+    // else if startTimeCode is not equal to "00:00:00" and durationTimeCode is equal to "00:00:00" then
+    if (![startTimeCode isEqualToString:@"00:00:00"] && [durationTimeCode isEqualToString:@"00:00:00"]) {
+        timecodeArray = [NSArray arrayWithObjects:@"-ss", startTimeCode, nil];
+        [tempArgs addObjectsFromArray:timecodeArray];
+    } else if (![startTimeCode isEqualToString:@"00:00:00"] && ![durationTimeCode isEqualToString:@"00:00:00"]) {
+        timecodeArray = [NSArray arrayWithObjects:@"-ss", startTimeCode, @"-t", durationTimeCode, nil];
+        [tempArgs addObjectsFromArray:timecodeArray];
+    } else if ([startTimeCode isEqualToString:@"00:00:00"] && ![durationTimeCode isEqualToString:@"00:00:00"]) {
+        timecodeArray = [NSArray arrayWithObjects:@"-t", durationTimeCode, nil];
+        [tempArgs addObjectsFromArray:timecodeArray];
+    }
+
+    //-- convert from startTimeCode to durationTimeCode
+    //else if startTimeCode is not equal to "00:00:00" and durationTimeCode is not equal to "00:00:00" then
+    //-- convert from start of file to durationTimeCode
+
+    NSArray *args = [NSArray arrayWithArray:tempArgs];
+
+    // NSLog(@"args: %@", args);
+
+    [task setArguments:args];
+
+    // NSLog(@"arguments: %@", [task arguments]);
+
+
+    // Release the old pipe
+    [pipe release];
+    // Create a new pipe
+    pipe = [[NSPipe alloc] init];
+    [task setStandardOutput:pipe];
+
+    NSFileHandle *fh = [pipe fileHandleForReading];
+
+    NSNotificationCenter *nc;
+    nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self];
+    [nc addObserver:self selector:@selector(dataReady:) name:NSFileHandleReadCompletionNotification object:fh];
+    [nc addObserver:self selector:@selector(taskTerminated:) name:NSTaskDidTerminateNotification object:task];
+
+
+    [logView setString:@"FUCKER!"];
+    [fh readInBackgroundAndNotify];
+    [task launch];
+}
+
+
 }
 
 -(IBAction)showInputChooserPanel:(id)sender
