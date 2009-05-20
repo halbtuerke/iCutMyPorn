@@ -16,13 +16,29 @@
     IBOutlet NSTextField    *durationTimeCodeField;
     
     IBOutlet NSButton       *inputChooseButton;
-    IBOutlet NSButton       *outputChosseButton;
+    IBOutlet NSButton       *outputChooseButton;
     IBOutlet NSButton       *startTranscodeButton;
     
     IBOutlet NSMatrix       *qualityRadioGroup;
+    
+    IBOutlet NSPanel        *progressSheet;
+    IBOutlet NSWindow       *mainWindow;
+    IBOutlet NSWindow       *logWindow;
+    IBOutlet NSProgressIndicator *progressIndicator;
+    
+    IBOutlet NSTextView     *logView;
+    
+    NSTask                  *task;
+    NSPipe                  *pipe;
+    
+    NSString                *qualitySettings;
+    int                     startButtonEnabled;
 }
 
--(IBAction)startCancelTranscode:(id)sender;
+-(IBAction)startTranscode:(id)sender;
 -(IBAction)showInputChooserPanel:(id)sender;
 -(IBAction)showOutputChooserPanel:(id)sender;
+-(IBAction)cancelTranscode:(id)sender;
+-(IBAction)showLogWindow:(id)sender;
+-(void)enableStartButton;
 @end
