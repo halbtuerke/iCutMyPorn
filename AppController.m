@@ -275,5 +275,45 @@
 
 }
 
+-(void)taskTerminated:(NSNotification *)note
+{
+    // NSLog(@"taskTerminated:");
+    int termStatus = [task terminationStatus];
+
+    // NSLog(@"terminationStatus is: %d", termStatus);
+
+    [progressSheet orderOut:nil];
+    [NSApp endSheet:progressSheet];
+
+    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+
+    [alert addButtonWithTitle:@"OK"];
+
+    if (termStatus == 255) {
+        [alert setMessageText:@"Conversion canceled"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+    } else if (termStatus == 1) {
+        [alert setMessageText:@"Sorry but it seems that I can't handle this movie file"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+    } else {
+        [alert setMessageText:@"Conversion finished"];
+        [alert setAlertStyle:NSInformationalAlertStyle];
+    }
+
+
+    // [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:@selector(terminationDidEnd:returnCode:contextInfo:) contextInfo:nil];
+    [alert runModal];
+
+    [task release];
+    task = nil;
+
+    [startTranscodeButton setState:0];
+    [startTranscodeButton setEnabled: NO];
+    startButtonEnabled = 0;
+
+    [inputFileField setStringValue:@""];
+    [inputChooseButton setTitle:@"Choose"];
+    [outputFileField setStringValue:@""];
+    [outputChooseButton setTitle:@"Choose"];
 }
 @end
