@@ -10,8 +10,12 @@
 
 
 @implementation AppController
--(IBAction)startCancelTranscode:(id)sender
+
+- (void)awakeFromNib
 {
+    startButtonEnabled = 0;
+    // NSLog(@"startButtonEnabeld: %d", startButtonEnabled);
+}
 
 }
 
