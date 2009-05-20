@@ -260,5 +260,20 @@
 
 }
 
+- (void)enableStartButton
+{
+    startButtonEnabled = startButtonEnabled + 1;
+    if (startButtonEnabled == 2) {
+        // enable start button
+        [startTranscodeButton setEnabled:YES];
+    } else {
+      //  startButtonEnabled = startButtonEnabled + 1;
+        [startTranscodeButton setEnabled:NO];
+    }
+
+    // NSLog(@"startButtonEnabeld: %d", startButtonEnabled);
+
+}
+
 }
 @end
