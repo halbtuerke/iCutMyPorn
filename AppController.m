@@ -11,10 +11,23 @@
 
 @implementation AppController
 
+@synthesize inputFilePath, outputFilePath;
+
+- (id)init
+{
+    self = [super init];
+    
+    if (self) {
+        self.inputFilePath = nil;
+        self.outputFilePath = nil;
+    }
+    
+    return self;
+}
+
 - (void)awakeFromNib
 {
-    startButtonEnabled = 0;
-    // NSLog(@"startButtonEnabeld: %d", startButtonEnabled);
+    
 }
 
 -(IBAction)startTranscode:(id)sender
@@ -148,10 +161,9 @@
 -(IBAction)showInputChooserPanel:(id)sender
 {
     if ([inputChooseButton title] == @"Clear") {
+        self.inputFilePath = nil;
         [inputFileField setStringValue:@""];
         [inputChooseButton setTitle:@"Choose"];
-        startButtonEnabled = startButtonEnabled - 2;
-        [self enableStartButton];
     } else {
         NSArray *fileTypes = [NSArray arrayWithObjects:@"flv", @"avi", @"mp4", @"mov", @"wmv", @"divx", @"h264", @"mkv", @"m4v", @"3gp", nil];
         NSString *moviesDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Movies"];
@@ -175,10 +187,9 @@
 {
     // Did they choose "Open"?
     if (returnCode == NSOKButton) {
-        NSString *path = [openPanel filename];
-        [inputFileField setStringValue:path];
+        self.inputFilePath = [openPanel filename];
+        [inputFileField setStringValue:inputFilePath];
         [inputChooseButton setTitle:@"Clear"];
-        [self enableStartButton];
         // NSLog(@"inputFile: %@", path);
     }
 }
@@ -186,10 +197,9 @@
 -(IBAction)showOutputChooserPanel:(id)sender
 {
     if ([outputChooseButton title] == @"Clear") {
+        self.outputFilePath = nil;
         [outputFileField setStringValue:@""];
         [outputChooseButton setTitle:@"Choose"];
-        startButtonEnabled = startButtonEnabled - 2;
-        [self enableStartButton];
     } else {
         NSString *moviesDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Movies"];
         NSSavePanel *panel = [NSSavePanel savePanel];
@@ -208,10 +218,9 @@
             contextInfo:(void *)x
 {
     if (returnCode == NSOKButton) {
-        NSString *path = [savePanel filename];
-        [outputFileField setStringValue:path];
+        self.outputFilePath = [savePanel filename];
+        [outputFileField setStringValue:outputFilePath];
         [outputChooseButton setTitle:@"Clear"];
-        [self enableStartButton];
         // NSLog(@"outputFile: %@", path);
     }
 }
@@ -260,21 +269,6 @@
 
 }
 
-- (void)enableStartButton
-{
-    startButtonEnabled = startButtonEnabled + 1;
-    if (startButtonEnabled == 2) {
-        // enable start button
-        [startTranscodeButton setEnabled:YES];
-    } else {
-      //  startButtonEnabled = startButtonEnabled + 1;
-        [startTranscodeButton setEnabled:NO];
-    }
-
-    // NSLog(@"startButtonEnabeld: %d", startButtonEnabled);
-
-}
-
 -(void)taskTerminated:(NSNotification *)note
 {
     // NSLog(@"taskTerminated:");
@@ -309,7 +303,6 @@
 
     [startTranscodeButton setState:0];
     [startTranscodeButton setEnabled: NO];
-    startButtonEnabled = 0;
 
     [inputFileField setStringValue:@""];
     [inputChooseButton setTitle:@"Choose"];

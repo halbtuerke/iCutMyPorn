@@ -30,15 +30,17 @@
 
     NSTask                  *task;
     NSPipe                  *pipe;
-
+    NSString                *inputFilePath;
+    NSString                *outputFilePath;
     NSString                *qualitySettings;
-    int                     startButtonEnabled;
 }
+
+@property(readwrite, copy) NSString *inputFilePath;
+@property(readwrite, copy) NSString *outputFilePath;
 
 -(IBAction)startTranscode:(id)sender;
 -(IBAction)showInputChooserPanel:(id)sender;
 -(IBAction)showOutputChooserPanel:(id)sender;
 -(IBAction)cancelTranscode:(id)sender;
 -(IBAction)showLogWindow:(id)sender;
--(void)enableStartButton;
 @end
