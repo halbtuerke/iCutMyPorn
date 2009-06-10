@@ -295,9 +295,7 @@
         [alert setAlertStyle:NSInformationalAlertStyle];
     }
 
-
-    // [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:@selector(terminationDidEnd:returnCode:contextInfo:) contextInfo:nil];
-    [alert runModal];
+    [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
 
     [task release];
     task = nil;
