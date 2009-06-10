@@ -276,7 +276,7 @@
     int termStatus = [task terminationStatus];
 
     // NSLog(@"terminationStatus is: %d", termStatus);
-
+    [progressIndicator stopAnimation:self];
     [progressSheet orderOut:nil];
     [NSApp endSheet:progressSheet];
 
@@ -316,8 +316,8 @@
 }
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
-{
-    NSString *fileextension = [filename pathExtension];
+{    
+    NSString *fileextension = [filename pathExtension];    
 
     if (![allowedFileTypes containsObject:fileextension]) {
         NSAlert *alert = [[[NSAlert alloc] init] autorelease];
@@ -330,7 +330,7 @@
         [inputFileField setStringValue:inputFilePath];
         [inputChooseButton setTitle:@"Clear"];
     }
-
+    
     return YES;
 }
 
