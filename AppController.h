@@ -33,10 +33,12 @@
     NSString                *inputFilePath;
     NSString                *outputFilePath;
     NSString                *qualitySettings;
+    NSArray                 *allowedFileTypes;
 }
 
 @property(readwrite, copy) NSString *inputFilePath;
 @property(readwrite, copy) NSString *outputFilePath;
+@property(nonatomic, retain) NSArray *allowedFileTypes;
 
 -(IBAction)startTranscode:(id)sender;
 -(IBAction)showInputChooserPanel:(id)sender;
