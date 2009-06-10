@@ -20,6 +20,8 @@
     if (self) {
         self.inputFilePath = nil;
         self.outputFilePath = nil;
+        [NSApp setDelegate:self];
+        self.allowedFileTypes = [NSArray arrayWithObjects:@"flv", @"avi", @"mp4", @"mov", @"wmv", @"divx", @"h264", @"mkv", @"m4v", @"3gp", @"mpg", @"mpeg", nil];
     }
     
     return self;
