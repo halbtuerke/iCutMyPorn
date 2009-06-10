@@ -167,14 +167,13 @@
         [inputFileField setStringValue:@""];
         [inputChooseButton setTitle:@"Choose"];
     } else {
-        NSArray *fileTypes = [NSArray arrayWithObjects:@"flv", @"avi", @"mp4", @"mov", @"wmv", @"divx", @"h264", @"mkv", @"m4v", @"3gp", nil];
         NSString *moviesDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Movies"];
         NSOpenPanel *panel = [NSOpenPanel openPanel];
 
         // Run the open panel
         [panel beginSheetForDirectory:moviesDirectory
                                  file:nil
-                                types:fileTypes
+                                types:allowedFileTypes
                        modalForWindow:mainWindow
                         modalDelegate:self
                        didEndSelector:@selector(inputChooserPanelDidEnd:returnCode:contextInfo:)
