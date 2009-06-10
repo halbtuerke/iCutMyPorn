@@ -317,6 +317,24 @@
     [logWindow makeKeyAndOrderFront:self];
 }
 
+- (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
+{
+    NSString *fileextension = [filename pathExtension];
+
+    if (![allowedFileTypes containsObject:fileextension]) {
+        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Sorry but it seems that I can't handle this kind of file"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
+    } else {
+        self.inputFilePath = filename;
+        [inputFileField setStringValue:inputFilePath];
+        [inputChooseButton setTitle:@"Clear"];
+    }
+
+    return YES;
+}
 
 
 @end
