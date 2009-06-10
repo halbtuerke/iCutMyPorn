@@ -11,7 +11,7 @@
 
 @implementation AppController
 
-@synthesize inputFilePath, outputFilePath;
+@synthesize inputFilePath, outputFilePath, allowedFileTypes;
 
 - (id)init
 {
