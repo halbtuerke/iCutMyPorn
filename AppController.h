@@ -45,4 +45,5 @@
 -(IBAction)showOutputChooserPanel:(id)sender;
 -(IBAction)cancelTranscode:(id)sender;
 -(IBAction)showLogWindow:(id)sender;
+-(IBAction)openHelp:(id)sender;
 @end

@@ -334,5 +334,25 @@
     return YES;
 }
 
+# pragma mark Open PDF for Help
+
+- (IBAction)openHelp:(id)sender
+{
+	// get path of bundle
+	NSBundle *bundle = [NSBundle mainBundle];
+	NSString *bundlePath = [bundle bundlePath];
+	
+	// location of iCutMyPorn Help file
+	NSString *helpFile = @"/Contents/Resources/iCutMyPorn Help.pdf";
+	
+	// concatenate bundlePath and helpFile
+	NSString *help = [bundlePath stringByAppendingString:helpFile];
+	
+	// open it with your favourite PDF file viewer
+	[[NSWorkspace sharedWorkspace] openFile:help];
+
+}
+
+
 
 @end
