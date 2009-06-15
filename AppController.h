@@ -40,6 +40,8 @@
 @property(readwrite, copy) NSString *outputFilePath;
 @property(nonatomic, retain) NSArray *allowedFileTypes;
 
+- (void)playSuccessSound:(BOOL)success;
+
 -(IBAction)startTranscode:(id)sender;
 -(IBAction)showInputChooserPanel:(id)sender;
 -(IBAction)showOutputChooserPanel:(id)sender;
