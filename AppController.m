@@ -353,6 +353,18 @@
 
 }
 
+# pragma mark successful/failed sounds
 
+- (void)playSuccessSound:(BOOL)success
+{
+	// system sounds in /Library/Sounds and ~/Library/Sounds will be played automatically when NSSound is used
+	if (success == YES) {
+		NSSound *successSound = [NSSound soundNamed:@"complete"];
+		[successSound play];
+	} else if (success == NO) {
+		NSSound *successSound = [NSSound soundNamed:@"Basso"];
+		[successSound play];
+	}
+}
 
 @end
