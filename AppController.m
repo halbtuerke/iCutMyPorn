@@ -18,6 +18,7 @@
     self = [super init];
     
     if (self) {
+        conversionSuccessful = NO;
         self.inputFilePath = nil;
         self.outputFilePath = nil;
         [NSApp setDelegate:self];
