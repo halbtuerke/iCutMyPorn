@@ -13,6 +13,7 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CD70A7FB0FEB8BDE000E34AD /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = CD70A7FA0FEB8BDE000E34AD /* Credits.html */; };
+		CD70A8370FEB90FA000E34AD /* complete.aif in Resources */ = {isa = PBXBuildFile; fileRef = CD70A8360FEB90FA000E34AD /* complete.aif */; };
 		CD737BE70FB081D400214858 /* ffmpeg in CopyFiles */ = {isa = PBXBuildFile; fileRef = CD737BE20FB0819000214858 /* ffmpeg */; };
 		CD737BF50FB0827E00214858 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD737BF40FB0827E00214858 /* icon.icns */; };
 		CDF7171B0FAF639F00EE28B6 /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDF7171A0FAF639F00EE28B6 /* AppController.m */; };
@@ -44,6 +45,7 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* iCutMyPorn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iCutMyPorn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD70A7FA0FEB8BDE000E34AD /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
+		CD70A8360FEB90FA000E34AD /* complete.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = complete.aif; sourceTree = "<group>"; };
 		CD737BE20FB0819000214858 /* ffmpeg */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = ffmpeg; sourceTree = "<group>"; };
 		CD737BF40FB0827E00214858 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		CDF717190FAF639F00EE28B6 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CD70A8360FEB90FA000E34AD /* complete.aif */,
 				CD70A7FA0FEB8BDE000E34AD /* Credits.html */,
 				6D6C02760FE6335900EA37BB /* iCutMyPorn Help.pdf */,
 				CD737BF40FB0827E00214858 /* icon.icns */,
@@ -190,6 +193,7 @@
 				CD737BF50FB0827E00214858 /* icon.icns in Resources */,
 				6D6C02770FE6335900EA37BB /* iCutMyPorn Help.pdf in Resources */,
 				CD70A7FB0FEB8BDE000E34AD /* Credits.html in Resources */,
+				CD70A8370FEB90FA000E34AD /* complete.aif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
