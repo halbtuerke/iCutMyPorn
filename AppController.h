@@ -34,13 +34,15 @@
     NSString                *outputFilePath;
     NSString                *qualitySettings;
     NSArray                 *allowedFileTypes;
+    
+    BOOL                    conversionSuccessful;
 }
 
 @property(readwrite, copy) NSString *inputFilePath;
 @property(readwrite, copy) NSString *outputFilePath;
 @property(nonatomic, retain) NSArray *allowedFileTypes;
 
-- (void)playSuccessSound:(BOOL)success;
+-(void)playSound:(BOOL)success;
 
 -(IBAction)startTranscode:(id)sender;
 -(IBAction)showInputChooserPanel:(id)sender;
