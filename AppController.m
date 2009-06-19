@@ -294,13 +294,16 @@
     } else {
         [alert setMessageText:@"Conversion finished"];
         [alert setAlertStyle:NSInformationalAlertStyle];
+        conversionSuccessful = YES;
     }
 
+    [self playSound:conversionSuccessful];
     [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
 
     [task release];
     task = nil;
 
+    conversionSuccessful = NO;
     [startTranscodeButton setState:0];
     [startTranscodeButton setEnabled: NO];
 
