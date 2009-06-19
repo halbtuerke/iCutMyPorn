@@ -296,13 +296,13 @@
         [alert setAlertStyle:NSInformationalAlertStyle];
         conversionSuccessful = YES;
     }
-
+    
     [self playSound:conversionSuccessful];
     [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
 
     [task release];
     task = nil;
-
+    
     conversionSuccessful = NO;
     [startTranscodeButton setState:0];
     [startTranscodeButton setEnabled: NO];
@@ -340,7 +340,7 @@
 
 # pragma mark Open PDF for Help
 
-- (IBAction)openHelp:(id)sender
+-(IBAction)openHelp:(id)sender
 {
 	// get path of bundle
 	NSBundle *bundle = [NSBundle mainBundle];
@@ -359,16 +359,18 @@
 
 # pragma mark successful/failed sounds
 
-- (void)playSuccessSound:(BOOL)success
+-(void)playSound:(BOOL)success
 {
-	// system sounds in /Library/Sounds and ~/Library/Sounds will be played automatically when NSSound is used
+    NSSound *successSound;
+    
+    // system sounds in /Library/Sounds and ~/Library/Sounds will be played automatically when NSSound is used
 	if (success == YES) {
-		NSSound *successSound = [NSSound soundNamed:@"complete"];
-		[successSound play];
+		successSound = [NSSound soundNamed:@"complete"];
 	} else if (success == NO) {
-		NSSound *successSound = [NSSound soundNamed:@"Basso"];
-		[successSound play];
+		successSound = [NSSound soundNamed:@"Basso"];
 	}
+    
+    [successSound play];
 }
 
 @end
