@@ -44,8 +44,7 @@
         [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
     } else {
         self.inputFilePath = filename;
-        [inputFileField setStringValue:inputFilePath];
-        [inputChooseButton setTitle:@"Clear"];
+        [self toggleButton:inputChooseButton];
     }
     
     return YES;
@@ -81,7 +80,6 @@
     // Did they choose "Open"?
     if (returnCode == NSOKButton) {
         self.inputFilePath = [openPanel filename];
-        [inputFileField setStringValue:inputFilePath];
         [self toggleButton:inputChooseButton];
     }
 }
@@ -111,7 +109,6 @@
 {
     if (returnCode == NSOKButton) {
         self.outputFilePath = [savePanel filename];
-        [outputFileField setStringValue:outputFilePath];
         [self toggleButton:outputChooseButton];
     }
 }
@@ -122,11 +119,9 @@
 {
     if (which == @"INPUT") {
         self.inputFilePath = nil;
-        [inputFileField setStringValue:@""];
         [self toggleButton:inputChooseButton];
     } else {
         self.outputFilePath = nil;
-        [outputFileField setStringValue:@""];
         [self toggleButton:outputChooseButton];
     }
 }
