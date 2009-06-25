@@ -30,6 +30,14 @@
     return self;
 }
 
++ (NSSet *)keyPathsForValuesAffectingInputButtonTitle {
+	return [NSSet setWithObjects:@"inputFilePath", nil];
+}
+
++ (NSSet *)keyPathsForValuesAffectingOutputButtonTitle {
+	return [NSSet setWithObjects:@"outputFilePath", nil];
+}
+
 #pragma mark Drag & Drop onto Application
 
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
@@ -44,7 +52,6 @@
         [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
     } else {
         self.inputFilePath = filename;
-        [self toggleButton:inputChooseButton];
     }
     
     return YES;
@@ -80,7 +87,6 @@
     // Did they choose "Open"?
     if (returnCode == NSOKButton) {
         self.inputFilePath = [openPanel filename];
-        [self toggleButton:inputChooseButton];
     }
 }
 
@@ -109,7 +115,6 @@
 {
     if (returnCode == NSOKButton) {
         self.outputFilePath = [savePanel filename];
-        [self toggleButton:outputChooseButton];
     }
 }
 
@@ -119,19 +124,28 @@
 {
     if (which == @"INPUT") {
         self.inputFilePath = nil;
-        [self toggleButton:inputChooseButton];
     } else {
         self.outputFilePath = nil;
-        [self toggleButton:outputChooseButton];
     }
 }
 
--(void)toggleButton:(NSButton *)button
+#pragma mark Button Bindings
+
+-(NSString *)inputButtonTitle
 {
-    if ([button title] == @"Clear") {
-        [button setTitle:@"Choose"];
+    if (inputFilePath == nil) {
+        return @"Choose";
     } else {
-        [button setTitle:@"Clear"];
+        return @"Clear";
+    }
+}
+
+-(NSString *)outputButtonTitle
+{
+    if (outputFilePath == nil) {
+        return @"Choose";
+    } else {
+        return @"Clear";
     }
 }
 

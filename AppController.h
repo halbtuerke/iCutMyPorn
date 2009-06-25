@@ -43,7 +43,6 @@
 @property(nonatomic, retain) NSArray *allowedFileTypes;
 
 -(void)playSound:(BOOL)success;
--(void)toggleButton:(NSButton *)button;
 -(void)clear:(NSString *)which;
 -(void)reset;
 

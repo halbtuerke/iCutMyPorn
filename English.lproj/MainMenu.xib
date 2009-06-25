@@ -935,7 +935,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
-			<object class="NSUserDefaultsController" id="415694897">
+			<object class="NSUserDefaultsController" id="524758572">
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
@@ -1253,6 +1253,38 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 					</object>
 					<int key="connectionID">547</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">title: inputButtonTitle</string>
+						<reference key="source" ref="718004633"/>
+						<reference key="destination" ref="636125378"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="718004633"/>
+							<reference key="NSDestination" ref="636125378"/>
+							<string key="NSLabel">title: inputButtonTitle</string>
+							<string key="NSBinding">title</string>
+							<string key="NSKeyPath">inputButtonTitle</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">549</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">title: outputButtonTitle</string>
+						<reference key="source" ref="247587086"/>
+						<reference key="destination" ref="636125378"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="247587086"/>
+							<reference key="NSDestination" ref="636125378"/>
+							<string key="NSLabel">title: outputButtonTitle</string>
+							<string key="NSBinding">title</string>
+							<string key="NSKeyPath">outputButtonTitle</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">551</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1774,7 +1806,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">542</int>
-						<reference key="object" ref="415694897"/>
+						<reference key="object" ref="524758572"/>
 						<reference key="parent" ref="1049"/>
 					</object>
 				</object>
@@ -1963,8 +1995,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<reference ref="9"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
-					<string>{{144, 250}, {480, 172}}</string>
-					<string>{{144, 250}, {480, 172}}</string>
+					<string>{{284, 52}, {480, 172}}</string>
+					<string>{{284, 52}, {480, 172}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES" id="5"/>
@@ -2099,7 +2131,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">547</int>
+			<int key="maxID">551</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
