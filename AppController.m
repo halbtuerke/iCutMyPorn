@@ -82,8 +82,7 @@
     if (returnCode == NSOKButton) {
         self.inputFilePath = [openPanel filename];
         [inputFileField setStringValue:inputFilePath];
-        [inputChooseButton setTitle:@"Clear"];
-        // NSLog(@"inputFile: %@", path);
+        [self toggleButton:inputChooseButton];
     }
 }
 
@@ -113,8 +112,7 @@
     if (returnCode == NSOKButton) {
         self.outputFilePath = [savePanel filename];
         [outputFileField setStringValue:outputFilePath];
-        [outputChooseButton setTitle:@"Clear"];
-        // NSLog(@"outputFile: %@", path);
+        [self toggleButton:outputChooseButton];
     }
 }
 
