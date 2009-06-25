@@ -43,6 +43,8 @@
 @property(nonatomic, retain) NSArray *allowedFileTypes;
 
 -(void)playSound:(BOOL)success;
+-(void)toggleButton:(NSButton *)button;
+-(void)clear:(NSString *)which;
 
 -(IBAction)startTranscode:(id)sender;
 -(IBAction)showInputChooserPanel:(id)sender;

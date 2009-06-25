@@ -13,6 +13,8 @@
 
 @synthesize inputFilePath, outputFilePath, allowedFileTypes;
 
+#pragma mark Initialization
+
 - (id)init
 {
     self = [super init];
@@ -28,145 +30,34 @@
     return self;
 }
 
-- (void)awakeFromNib
-{
+#pragma mark Drag & Drop onto Application
+
+- (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
+{    
+    NSString *fileextension = [filename pathExtension];    
     
-}
-
--(IBAction)startTranscode:(id)sender
-{
-    // Validate all user inputs
-
-    // Show progress sheet and start the progress indicator
-    [NSApp beginSheet:progressSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
-    [progressIndicator startAnimation:self];
-
-    // NSLog(@"startTimeCode: %@", [startTimeCodeField stringValue]);
-    // NSLog(@"durationTimeCode: %@", [durationTimeCodeField stringValue]);
-    // NSLog(@"quality: %@", [[qualityRadioGroup selectedCell] title]);
-
-    NSString *startTimeCode = [startTimeCodeField stringValue];
-    NSString *durationTimeCode = [durationTimeCodeField stringValue];
-
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *ffmpegPath = [bundle pathForAuxiliaryExecutable:@"ffmpeg"];
-
-    // NSLog(@"ffmpegPath: %@", ffmpegPath);
-
-    // Start ffmpeg
-    task = [[NSTask alloc] init];
-    [task setLaunchPath:ffmpegPath];
-
-    NSMutableArray *tempArgs = [NSMutableArray arrayWithObjects: @"-i",
-                     [inputFileField stringValue],
-                     @"-acodec",
-                     @"libfaac",
-                     @"-ab",
-                     @"128k",
-                     @"-vcodec",
-                     @"libx264",
-                     @"-threads",
-                     @"2",
-                     @"-y",
-                     [outputFileField stringValue], nil];
-
-    NSArray *qualityArray;
-
-    // NSLog(@"qualityRadioGroup: %@", [[qualityRadioGroup selectedCell] title]);
-
-    // NSLog(@"TEMPARGS %@", tempArgs);
-
-    if ([[[qualityRadioGroup selectedCell] title] isEqualToString:@"Lossless"]) {
-        qualityArray = [NSArray arrayWithObjects:@"-crf", @"18", @"-me_method", @"umh", @"-subq", @"6", nil];
-        [tempArgs addObjectsFromArray:qualityArray];
-        // NSLog(@"tempargs: %@", tempArgs);
-    } else if ([[[qualityRadioGroup selectedCell] title] isEqualToString:@"Recompress"]) {
-        qualityArray = [NSArray arrayWithObjects:@"-b", @"1000k", @"-subq", @"4", nil];
-        [tempArgs addObjectsFromArray:qualityArray];
-        // NSLog(@"tempargs: %@", tempArgs);
+    if (![allowedFileTypes containsObject:fileextension]) {
+        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+        [alert addButtonWithTitle:@"OK"];
+        [alert setMessageText:@"Sorry but it seems that I can't handle this kind of file"];
+        [alert setAlertStyle:NSWarningAlertStyle];
+        [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
+    } else {
+        self.inputFilePath = filename;
+        [inputFileField setStringValue:inputFilePath];
+        [inputChooseButton setTitle:@"Clear"];
     }
-
-    NSArray *timecodeArray;
-
-    // -- convert from startTimeCode to end of file
-    // else if startTimeCode is not equal to "00:00:00" and durationTimeCode is equal to "00:00:00" then
-    if (![startTimeCode isEqualToString:@"00:00:00"] && [durationTimeCode isEqualToString:@"00:00:00"]) {
-        timecodeArray = [NSArray arrayWithObjects:@"-ss", startTimeCode, nil];
-        [tempArgs addObjectsFromArray:timecodeArray];
-    } else if (![startTimeCode isEqualToString:@"00:00:00"] && ![durationTimeCode isEqualToString:@"00:00:00"]) {
-        timecodeArray = [NSArray arrayWithObjects:@"-ss", startTimeCode, @"-t", durationTimeCode, nil];
-        [tempArgs addObjectsFromArray:timecodeArray];
-    } else if ([startTimeCode isEqualToString:@"00:00:00"] && ![durationTimeCode isEqualToString:@"00:00:00"]) {
-        timecodeArray = [NSArray arrayWithObjects:@"-t", durationTimeCode, nil];
-        [tempArgs addObjectsFromArray:timecodeArray];
-    }
-
-    //-- convert from startTimeCode to durationTimeCode
-    //else if startTimeCode is not equal to "00:00:00" and durationTimeCode is not equal to "00:00:00" then
-    //-- convert from start of file to durationTimeCode
-
-    NSArray *args = [NSArray arrayWithArray:tempArgs];
-
-    // NSLog(@"args: %@", args);
-
-    [task setArguments:args];
-
-    // NSLog(@"arguments: %@", [task arguments]);
-
-
-    // Release the old pipe
-    [pipe release];
-    // Create a new pipe
-    pipe = [[NSPipe alloc] init];
-    [task setStandardOutput:pipe];
-
-    NSFileHandle *fh = [pipe fileHandleForReading];
-
-    NSNotificationCenter *nc;
-    nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self];
-    [nc addObserver:self selector:@selector(dataReady:) name:NSFileHandleReadCompletionNotification object:fh];
-    [nc addObserver:self selector:@selector(taskTerminated:) name:NSTaskDidTerminateNotification object:task];
-
-
-    [logView setString:@"FUCKER!"];
-    [fh readInBackgroundAndNotify];
-    [task launch];
+    
+    return YES;
 }
 
-
--(void)appendData:(NSData *)d
-{
-    // NSLog(@"Trying to append");
-    NSString *s = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
-    NSTextStorage *ts = [logView textStorage];
-    [ts replaceCharactersInRange:NSMakeRange([ts length], 0) withString:s];
-    [s release];
-}
-
-
--(void)dataReady:(NSNotification *)n
-{
-    NSData *d;
-    d = [[n userInfo] valueForKey:NSFileHandleNotificationDataItem];
-    // NSLog(@"The notification is: %@", n);
-    // NSLog(@"The data is: %@", d);
-
-    [self appendData:d];
-
-    // If the task is running start reading again
-    if ([task isRunning]) {
-        // NSLog(@"Reading again");
-        [[pipe fileHandleForReading] readInBackgroundAndNotify];
-    }
-}
+#pragma mark -
+# pragma mark InputChooser
 
 -(IBAction)showInputChooserPanel:(id)sender
 {
     if ([inputChooseButton title] == @"Clear") {
-        self.inputFilePath = nil;
-        [inputFileField setStringValue:@""];
-        [inputChooseButton setTitle:@"Choose"];
+        [self clear:@"INPUT"];
     } else {
         NSString *moviesDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Movies"];
         NSOpenPanel *panel = [NSOpenPanel openPanel];
@@ -196,12 +87,12 @@
     }
 }
 
+# pragma mark OutputChooser
+
 -(IBAction)showOutputChooserPanel:(id)sender
 {
     if ([outputChooseButton title] == @"Clear") {
-        self.outputFilePath = nil;
-        [outputFileField setStringValue:@""];
-        [outputChooseButton setTitle:@"Choose"];
+        [self clear:@"OUTPUT"];
     } else {
         NSString *moviesDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Movies"];
         NSSavePanel *panel = [NSSavePanel savePanel];
@@ -225,6 +116,134 @@
         [outputChooseButton setTitle:@"Clear"];
         // NSLog(@"outputFile: %@", path);
     }
+}
+
+#pragma mark Helper Methods
+
+-(void)clear:(NSString *)which
+{
+    if (which == @"INPUT") {
+        self.inputFilePath = nil;
+        [inputFileField setStringValue:@""];
+        [self toggleButton:inputChooseButton];
+    } else {
+        self.outputFilePath = nil;
+        [outputFileField setStringValue:@""];
+        [self toggleButton:outputChooseButton];
+    }
+}
+
+-(void)toggleButton:(NSButton *)button
+{
+    if ([button title] == @"Clear") {
+        [button setTitle:@"Choose"];
+    } else {
+        [button setTitle:@"Clear"];
+    }
+}
+
+#pragma mark -
+# pragma mark NSTask methods
+
+-(IBAction)startTranscode:(id)sender
+{
+    // Validate all user inputs
+    
+    // Show progress sheet and start the progress indicator
+    [NSApp beginSheet:progressSheet modalForWindow:mainWindow modalDelegate:self didEndSelector:NULL contextInfo:nil];
+    [progressIndicator startAnimation:self];
+    
+    // NSLog(@"startTimeCode: %@", [startTimeCodeField stringValue]);
+    // NSLog(@"durationTimeCode: %@", [durationTimeCodeField stringValue]);
+    // NSLog(@"quality: %@", [[qualityRadioGroup selectedCell] title]);
+    
+    NSString *startTimeCode = [startTimeCodeField stringValue];
+    NSString *durationTimeCode = [durationTimeCodeField stringValue];
+    
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *ffmpegPath = [bundle pathForAuxiliaryExecutable:@"ffmpeg"];
+    
+    // NSLog(@"ffmpegPath: %@", ffmpegPath);
+    
+    // Start ffmpeg
+    task = [[NSTask alloc] init];
+    [task setLaunchPath:ffmpegPath];
+    
+    NSMutableArray *tempArgs = [NSMutableArray arrayWithObjects: @"-i",
+                                [inputFileField stringValue],
+                                @"-acodec",
+                                @"libfaac",
+                                @"-ab",
+                                @"128k",
+                                @"-vcodec",
+                                @"libx264",
+                                @"-threads",
+                                @"2",
+                                @"-y",
+                                [outputFileField stringValue], nil];
+    
+    NSArray *qualityArray;
+    
+    // NSLog(@"qualityRadioGroup: %@", [[qualityRadioGroup selectedCell] title]);
+    
+    // NSLog(@"TEMPARGS %@", tempArgs);
+    
+    if ([[[qualityRadioGroup selectedCell] title] isEqualToString:@"Lossless"]) {
+        qualityArray = [NSArray arrayWithObjects:@"-crf", @"18", @"-me_method", @"umh", @"-subq", @"6", nil];
+        [tempArgs addObjectsFromArray:qualityArray];
+        // NSLog(@"tempargs: %@", tempArgs);
+    } else if ([[[qualityRadioGroup selectedCell] title] isEqualToString:@"Recompress"]) {
+        qualityArray = [NSArray arrayWithObjects:@"-b", @"1000k", @"-subq", @"4", nil];
+        [tempArgs addObjectsFromArray:qualityArray];
+        // NSLog(@"tempargs: %@", tempArgs);
+    }
+    
+    NSArray *timecodeArray;
+    
+    // -- convert from startTimeCode to end of file
+    // else if startTimeCode is not equal to "00:00:00" and durationTimeCode is equal to "00:00:00" then
+    if (![startTimeCode isEqualToString:@"00:00:00"] && [durationTimeCode isEqualToString:@"00:00:00"]) {
+        timecodeArray = [NSArray arrayWithObjects:@"-ss", startTimeCode, nil];
+        [tempArgs addObjectsFromArray:timecodeArray];
+    } else if (![startTimeCode isEqualToString:@"00:00:00"] && ![durationTimeCode isEqualToString:@"00:00:00"]) {
+        timecodeArray = [NSArray arrayWithObjects:@"-ss", startTimeCode, @"-t", durationTimeCode, nil];
+        [tempArgs addObjectsFromArray:timecodeArray];
+    } else if ([startTimeCode isEqualToString:@"00:00:00"] && ![durationTimeCode isEqualToString:@"00:00:00"]) {
+        timecodeArray = [NSArray arrayWithObjects:@"-t", durationTimeCode, nil];
+        [tempArgs addObjectsFromArray:timecodeArray];
+    }
+    
+    //-- convert from startTimeCode to durationTimeCode
+    //else if startTimeCode is not equal to "00:00:00" and durationTimeCode is not equal to "00:00:00" then
+    //-- convert from start of file to durationTimeCode
+    
+    NSArray *args = [NSArray arrayWithArray:tempArgs];
+    
+    // NSLog(@"args: %@", args);
+    
+    [task setArguments:args];
+    
+    // NSLog(@"arguments: %@", [task arguments]);
+    
+    
+    // Release the old pipe
+    [pipe release];
+    // Create a new pipe
+    pipe = [[NSPipe alloc] init];
+    [task setStandardOutput:pipe];
+    
+    NSFileHandle *fh = [pipe fileHandleForReading];
+    
+    NSNotificationCenter *nc;
+    nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self];
+    [nc addObserver:self selector:@selector(dataReady:) name:NSFileHandleReadCompletionNotification object:fh];
+    [nc addObserver:self selector:@selector(taskTerminated:) name:NSTaskDidTerminateNotification object:task];
+    
+    
+    [logView setString:@"FUCKER!"];
+    [fh readInBackgroundAndNotify];
+    [task launch];
 }
 
 -(IBAction)cancelTranscode:(id)sender
@@ -313,31 +332,59 @@
     [outputChooseButton setTitle:@"Choose"];
 }
 
+# pragma mark successful/failed sounds
+
+-(void)playSound:(BOOL)success
+{
+    NSSound *successSound = [[NSSound alloc] init];
+    
+    // system sounds in /Library/Sounds and ~/Library/Sounds will be played automatically when NSSound is used
+	if (success == YES) {
+		successSound = [NSSound soundNamed:@"complete"];
+	} else if (success == NO) {
+		successSound = [NSSound soundNamed:@"Basso"];
+	}
+    
+    [successSound play];
+    [successSound release];
+}
+
+#pragma mark -
+#pragma mark Logging
+
 -(IBAction)showLogWindow:(id)sender
 {
     // NSLog(@"Log Window Button clicked");
     [logWindow makeKeyAndOrderFront:self];
 }
 
-- (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename
-{    
-    NSString *fileextension = [filename pathExtension];    
-
-    if (![allowedFileTypes containsObject:fileextension]) {
-        NSAlert *alert = [[[NSAlert alloc] init] autorelease];
-        [alert addButtonWithTitle:@"OK"];
-        [alert setMessageText:@"Sorry but it seems that I can't handle this kind of file"];
-        [alert setAlertStyle:NSWarningAlertStyle];
-        [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
-    } else {
-        self.inputFilePath = filename;
-        [inputFileField setStringValue:inputFilePath];
-        [inputChooseButton setTitle:@"Clear"];
-    }
-    
-    return YES;
+-(void)appendData:(NSData *)d
+{
+    // NSLog(@"Trying to append");
+    NSString *s = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
+    NSTextStorage *ts = [logView textStorage];
+    [ts replaceCharactersInRange:NSMakeRange([ts length], 0) withString:s];
+    [s release];
 }
 
+
+-(void)dataReady:(NSNotification *)n
+{
+    NSData *d;
+    d = [[n userInfo] valueForKey:NSFileHandleNotificationDataItem];
+    // NSLog(@"The notification is: %@", n);
+    // NSLog(@"The data is: %@", d);
+    
+    [self appendData:d];
+    
+    // If the task is running start reading again
+    if ([task isRunning]) {
+        // NSLog(@"Reading again");
+        [[pipe fileHandleForReading] readInBackgroundAndNotify];
+    }
+}
+
+#pragma mark -
 # pragma mark Open PDF for Help
 
 -(IBAction)openHelp:(id)sender
@@ -355,22 +402,6 @@
 	// open it with your favourite PDF file viewer
 	[[NSWorkspace sharedWorkspace] openFile:help];
 
-}
-
-# pragma mark successful/failed sounds
-
--(void)playSound:(BOOL)success
-{
-    NSSound *successSound;
-    
-    // system sounds in /Library/Sounds and ~/Library/Sounds will be played automatically when NSSound is used
-	if (success == YES) {
-		successSound = [NSSound soundNamed:@"complete"];
-	} else if (success == NO) {
-		successSound = [NSSound soundNamed:@"Basso"];
-	}
-    
-    [successSound play];
 }
 
 @end
