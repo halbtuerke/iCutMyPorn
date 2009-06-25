@@ -331,11 +331,6 @@
     
     [self clear:@"INPUT"];
     [self clear:@"OUTPUT"];
-    
-//    [inputFileField setStringValue:@""];
-//    [inputChooseButton setTitle:@"Choose"];
-//    [outputFileField setStringValue:@""];
-//    [outputChooseButton setTitle:@"Choose"];
 }
 
 # pragma mark successful/failed sounds
