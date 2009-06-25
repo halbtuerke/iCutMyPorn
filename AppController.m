@@ -316,18 +316,26 @@
     
     [self playSound:conversionSuccessful];
     [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:nil contextInfo:nil];
+    
+    [self reset];
+}
 
+-(void)reset
+{
     [task release];
     task = nil;
-    
     conversionSuccessful = NO;
+    
     [startTranscodeButton setState:0];
     [startTranscodeButton setEnabled: NO];
-
-    [inputFileField setStringValue:@""];
-    [inputChooseButton setTitle:@"Choose"];
-    [outputFileField setStringValue:@""];
-    [outputChooseButton setTitle:@"Choose"];
+    
+    [self clear:@"INPUT"];
+    [self clear:@"OUTPUT"];
+    
+//    [inputFileField setStringValue:@""];
+//    [inputChooseButton setTitle:@"Choose"];
+//    [outputFileField setStringValue:@""];
+//    [outputChooseButton setTitle:@"Choose"];
 }
 
 # pragma mark successful/failed sounds

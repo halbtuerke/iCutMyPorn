@@ -45,6 +45,7 @@
 -(void)playSound:(BOOL)success;
 -(void)toggleButton:(NSButton *)button;
 -(void)clear:(NSString *)which;
+-(void)reset;
 
 -(IBAction)startTranscode:(id)sender;
 -(IBAction)showInputChooserPanel:(id)sender;
