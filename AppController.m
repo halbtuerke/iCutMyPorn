@@ -338,6 +338,9 @@
     [startTranscodeButton setState:0];
     [startTranscodeButton setEnabled: NO];
     
+    [startTimeCodeField setStringValue:@"00:00:00"];
+    [durationTimeCodeField setStringValue:@"00:00:00"];
+    
     [self clear:@"INPUT"];
     [self clear:@"OUTPUT"];
 }
