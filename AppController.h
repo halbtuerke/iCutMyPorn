@@ -34,12 +34,17 @@
     NSString                *outputFilePath;
     NSString                *qualitySettings;
     NSArray                 *allowedFileTypes;
+    NSString                *moviesDirectory;
+    NSBundle                *bundle;
+    NSString                *ffmpegPath;
     
     BOOL                    conversionSuccessful;
 }
 
 @property(readwrite, copy) NSString *inputFilePath;
 @property(readwrite, copy) NSString *outputFilePath;
+@property(readwrite, copy) NSString *moviesDirectory;
+@property(readwrite, copy) NSString *ffmpegPath;
 @property(nonatomic, retain) NSArray *allowedFileTypes;
 
 -(void)playSound:(BOOL)success;

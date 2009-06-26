@@ -11,7 +11,7 @@
 
 @implementation AppController
 
-@synthesize inputFilePath, outputFilePath, allowedFileTypes;
+@synthesize inputFilePath, outputFilePath, allowedFileTypes, moviesDirectory, ffmpegPath;
 
 #pragma mark Initialization
 
@@ -23,6 +23,9 @@
         conversionSuccessful = NO;
         self.inputFilePath = nil;
         self.outputFilePath = nil;
+        self.moviesDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Movies"];
+        bundle = [NSBundle mainBundle];
+        self.ffmpegPath = [bundle pathForAuxiliaryExecutable:@"ffmpeg"];
         [NSApp setDelegate:self];
         self.allowedFileTypes = [NSArray arrayWithObjects:@"flv", @"avi", @"mp4", @"mov", @"wmv", @"divx", @"h264", @"mkv", @"m4v", @"3gp", @"mpg", @"mpeg", nil];
     }
@@ -65,7 +68,6 @@
     if ([inputChooseButton title] == @"Clear") {
         [self clear:@"INPUT"];
     } else {
-        NSString *moviesDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Movies"];
         NSOpenPanel *panel = [NSOpenPanel openPanel];
 
         // Run the open panel
@@ -84,7 +86,6 @@
              returnCode:(int)returnCode
             contextInfo:(void *)x
 {
-    // Did they choose "Open"?
     if (returnCode == NSOKButton) {
         self.inputFilePath = [openPanel filename];
     }
@@ -97,7 +98,6 @@
     if ([outputChooseButton title] == @"Clear") {
         [self clear:@"OUTPUT"];
     } else {
-        NSString *moviesDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Movies"];
         NSSavePanel *panel = [NSSavePanel savePanel];
 
         [panel beginSheetForDirectory:moviesDirectory
@@ -167,9 +167,6 @@
     NSString *startTimeCode = [startTimeCodeField stringValue];
     NSString *durationTimeCode = [durationTimeCodeField stringValue];
     
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *ffmpegPath = [bundle pathForAuxiliaryExecutable:@"ffmpeg"];
-    
     // NSLog(@"ffmpegPath: %@", ffmpegPath);
     
     // Start ffmpeg
@@ -177,7 +174,7 @@
     [task setLaunchPath:ffmpegPath];
     
     NSMutableArray *tempArgs = [NSMutableArray arrayWithObjects: @"-i",
-                                [inputFileField stringValue],
+                                inputFilePath,
                                 @"-acodec",
                                 @"libfaac",
                                 @"-ab",
@@ -187,7 +184,7 @@
                                 @"-threads",
                                 @"2",
                                 @"-y",
-                                [outputFileField stringValue], nil];
+                                outputFilePath, nil];
     
     NSArray *qualityArray;
     
@@ -271,8 +268,6 @@
         [alert setAlertStyle:NSWarningAlertStyle];
         [alert beginSheetModalForWindow:mainWindow modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:nil];
     }
-
-    // NSLog(@"Something went wrong…");
 }
 
 - (void)alertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo {
@@ -283,7 +278,7 @@
 
         // Delete the temporary outputfile
         NSFileManager *fm = [[NSFileManager alloc] init];
-        [fm removeFileAtPath:[outputFileField stringValue] handler:nil];
+        [fm removeFileAtPath:outputFilePath handler:nil];
 
         [progressIndicator stopAnimation:self];
         // [startTranscodeButton setNextState];
@@ -402,19 +397,7 @@
 
 -(IBAction)openHelp:(id)sender
 {
-	// get path of bundle
-	NSBundle *bundle = [NSBundle mainBundle];
-	NSString *bundlePath = [bundle bundlePath];
-	
-	// location of iCutMyPorn Help file
-	NSString *helpFile = @"/Contents/Resources/iCutMyPorn Help.pdf";
-	
-	// concatenate bundlePath and helpFile
-	NSString *help = [bundlePath stringByAppendingString:helpFile];
-	
-	// open it with your favourite PDF file viewer
-	[[NSWorkspace sharedWorkspace] openFile:help];
-
+    [[NSWorkspace sharedWorkspace] openFile:[bundle pathForResource:@"iCutMyPorn Help" ofType:@"pdf" inDirectory:@""]];
 }
 
 @end
