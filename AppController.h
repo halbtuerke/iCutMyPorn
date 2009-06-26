@@ -32,7 +32,6 @@
     NSPipe                  *pipe;
     NSString                *inputFilePath;
     NSString                *outputFilePath;
-    NSString                *qualitySettings;
     NSArray                 *allowedFileTypes;
     NSString                *moviesDirectory;
     NSBundle                *bundle;

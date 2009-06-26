@@ -33,6 +33,16 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [super dealloc];
+    self.inputFilePath = nil;
+    self.outputFilePath = nil;
+    self.allowedFileTypes = nil;
+    self.moviesDirectory = nil;
+    self.ffmpegPath = nil;
+}
+
 + (NSSet *)keyPathsForValuesAffectingInputButtonTitle {
 	return [NSSet setWithObjects:@"inputFilePath", nil];
 }
@@ -277,7 +287,7 @@
         [task terminate];
 
         // Delete the temporary outputfile
-        NSFileManager *fm = [[NSFileManager alloc] init];
+        NSFileManager *fm = [[[NSFileManager alloc] init] autorelease];
         [fm removeFileAtPath:outputFilePath handler:nil];
 
         [progressIndicator stopAnimation:self];
@@ -344,7 +354,7 @@
 
 -(void)playSound:(BOOL)success
 {
-    NSSound *successSound = [[NSSound alloc] init];
+    NSSound *successSound = [[[NSSound alloc] init] autorelease];
     
     // system sounds in /Library/Sounds and ~/Library/Sounds will be played automatically when NSSound is used
 	if (success == YES) {
@@ -354,7 +364,6 @@
 	}
     
     [successSound play];
-    [successSound release];
 }
 
 #pragma mark -
@@ -369,10 +378,9 @@
 -(void)appendData:(NSData *)d
 {
     // NSLog(@"Trying to append");
-    NSString *s = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
+    NSString *s = [[[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding] autorelease];
     NSTextStorage *ts = [logView textStorage];
     [ts replaceCharactersInRange:NSMakeRange([ts length], 0) withString:s];
-    [s release];
 }
 
 
