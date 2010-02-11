@@ -1,11 +1,5 @@
-build/*
-videoextrator features.txt
 .DS_Store
-Video Extractor.xcodeproj/patrick.pbxuser
-Video Extractor.xcodeproj/patrick.perspectivev3
-spgw4ffmpeg.xcodeproj/patrick.pbxuser
-spgw4ffmpeg.xcodeproj/patrick.perspectivev3
-ffmpeg.old
-spgw4ffmpeg.xcodeproj/patrick.mode1v3
+build/*
+*.mode1v3
+*.pbxuser
 Static analysis/*
-spgw4ffmpeg.tmproj
